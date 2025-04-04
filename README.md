@@ -152,3 +152,6 @@ const Body = () => {
 };
 
 export default Body;
+
+# State variable
+  Whenever state variables update, react triggers a reconciliation cycle(re-renders the component)
