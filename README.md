@@ -65,86 +65,123 @@ import {Component} from "path";
            
 
 # RestaurantCard
-import { CDN_LOGO } from "./utils/component";
+import { SWIGGY_IMG } from "../utils/component";
 
 const RestaurantCard = (props) => {
     const { resData } = props;
     
     const {
-        image,
+        cloudinaryImageId,
         name,
-        cuisine,
-        rating,
-        tags,
-        mealType,
-    } = resData;
-
-    let imageSplit = image.split("/");
-    let uniqueImageName = imageSplit[imageSplit.length - 1];
+        cuisines,
+        avgRating,
+        costForTwo,
+        areaName,
+    } = resData?.data?.cards[3]?.card?.card?.info;
+    console.log(resData);
 
     return (
         <div className="res-card" style={{backgroundColor:"rgb(234, 231, 231)"}}>
-          <img 
+         <img 
           className="res-logo"
           alt="res-logo"
-          src={ CDN_LOGO + uniqueImageName}
+          src={ SWIGGY_IMG + cloudinaryImageId }
            />
             <h3>{name}</h3>
-            <h4>{cuisine}</h4>
-            <h4>{rating} stars</h4>
-            <h4>{tags.join(" , ")}</h4>
-            <h4>{mealType.join(" , ")}</h4>
+            <h4>{cuisines.join(" , ")}</h4>
+            <h4>{avgRating} stars</h4>
+            <h4>{costForTwo}</h4>
+            <h4>{areaName}</h4>
         </div>
     ); 
 };
 
-export default RestaurantCard;           
+export default RestaurantCard;       
 
 
 # Body 
 import { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
-import resList from "./utils/mockData";
+import Shimmer from "./shimmer";
 
 const Body = () => {
 
-    const [listOfRestaurant, setlistOfRestaurant] = useState(resList);
+    const [listOfRestaurant, setListOfRestaurant] = useState([]);
+    
+    const [ filteredRestaurant, setFilteredRestaurant] = useState([]);
 
+    const [searchText , setSearchText] = useState("");
+
+    
+    
     useEffect(() => {
         fetchData();
     }, []);
 
     const fetchData = async () => {
         const data = await fetch(
-          "https://www.swiggy.com/dapi/restaurants/list/v5?lat=19.2183307&lng=72.9780897&collection=83637&tags=layout_CCS_Burger&sortBy=&filters=&type=rcv2&offset=0&page_type=null"
-        );
+         "https://www.swiggy.com/dapi/restaurants/list/v5?lat=19.07480&lng=72.88560&collection=83637&tags=layout_CCS_Burger&sortBy=&filters=&type=rcv2&offset=0&page_type=null"
+         );
 
         const json = await data.json();
-     
-    console.log(json);
-    setlistOfRestaurant(json.data.cards)
+  
+        //console.log(json);
+ 
+        //Optional Chaining
+ 
+        setListOfRestaurant(json?.recipes);
+        setFilteredRestaurant(json?.recipes);
 };
-    
-    
-    return (
+    // Conditional Rendering - 
+    return listOfRestaurant.length === 0 ? 
+            ( <Shimmer /> ) :
+    (
     <div className="body">
         <div className="filter">
-            <button 
+            <div className="search">
+                <input type="text"
+                   className="search-box"
+                   value={searchText}
+                   onChange={(e) => {
+                    setSearchText(e.target.value);
+                   }}/>
+                <button 
+                    onClick={() => {
+
+
+                        console.log("Search",searchText);
+
+                        const filteredRestaurant = listOfRestaurant.filter(
+                            (res) => res.name.toLowerCase().includes(searchText.toLowerCase())
+                        );
+
+                        setFilteredRestaurant(filteredRestaurant);
+                    }}
+                   >
+                    Search
+                </button>
+            </div>
+            {/* <button 
               className="filter-btn" 
               onClick={() => {
+                console.log("listOfRestaurant", listOfRestaurant);
+                
                 const filteredList = listOfRestaurant.filter(
-                    (res) => res.rating > 4
+                    (res) => res.rating > 4.5
                 );
-                setlistOfRestaurant(filteredList);
+
+                console.log("filteredList", filteredList);
+                
+                setFilteredRestaurant(filteredList);
             }}
             >
                 Top Rated Restaurants
-            </button>
+            </button> */}
         </div>
         <div className="res-container">
             {
-              listOfRestaurant.map((restaurant) => ( 
-              <RestaurantCard key={restaurant.id} resData={restaurant} />
+              filteredRestaurant.map((restaurant) => ( 
+              <RestaurantCard key={restaurant.data.cards[3].card.card.info.id} resData={restaurant} />
             ))}
         </div>
     </div>
@@ -153,5 +190,57 @@ const Body = () => {
 
 export default Body;
 
+
+              <Link 
+                key={restaurant.id}
+                to={"/restaurants/" + restaurant.id }> 
+                <RestaurantCard resData={restaurant} />
+              </Link>
+
+
+
+# UserClass.js
+   import React from "react";
+
+class UserClass extends React.Component {
+
+    constructor(props){
+        super(props);
+       
+        this.state = {
+           count : 0
+        } }
+   render() {
+
+        const { Name, Location} = this.props;
+        const { count } = this.state;
+
+        return (
+            <div className="User-Card">
+                <h2>Count : {count}</h2>
+                <button onClick={()=>{
+                    this.setState({
+                        count: this.state.count + 1,
+                    });
+                }}
+                >
+                    Count Increase
+                </button>
+                <h2>Name:{Name}</h2>
+                <h3>Location:{Location}</h3>
+            </div>
+        ) } }
+export default UserClass;
+
 # State variable
   Whenever state variables update, react triggers a reconciliation cycle(re-renders the component)
+
+
+# Menu ID
+  799184 - B Burger
+  32399  - McDonald's
+  78036  - Burger King
+  709523 - Speak Burgers by Vicky Ratnani
+  65221  - The Barn Grill
+  6990   - Jumboking Burgers
+  52767  - KFC

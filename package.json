@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "This is Namaste React by Khushi Yadav ",
   "scripts": {
-    "start":"parcel index.html",
+    "start": "parcel index.html",
     "build": "parcel build index.html",
     "test": "jest"
   },
@@ -23,10 +23,11 @@
     "process": "^0.11.10"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^6.22.0"
   },
-  "browserslist":[
-    "Lasr 2 versions"
+  "browserslist": [
+    "Last 2 versions"
   ]
 }

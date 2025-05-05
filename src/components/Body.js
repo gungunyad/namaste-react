@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./shimmer";
-// import resList from "./utils/mockData";
+
 const Body = () => {
 
     const [listOfRestaurant, setListOfRestaurant] = useState([]);
@@ -87,3 +87,5 @@ const Body = () => {
 };
 
 export default Body;
+
+
