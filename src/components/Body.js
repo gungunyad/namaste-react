@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./shimmer";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
 
@@ -30,20 +31,33 @@ const Body = () => {
         setListOfRestaurant(json?.recipes);
         setFilteredRestaurant(json?.recipes);
 };
+
+
+    const onlineStatus = useOnlineStatus();
+    
+    if(onlineStatus === false)
+        return(
+         <h1>You are Offline..!!
+             Please Check Your Internet Connection👻👾...
+         </h1>
+         
+        )
+
+
     // Conditional Rendering - 
     return listOfRestaurant.length === 0 ? 
             ( <Shimmer /> ) :
     (
-    <div className="body">
-        <div className="filter">
-            <div className="search">
+    <div className="body bg-whit">
+        <div className="filter flex">
+            <div className="search m-4 p-4">
                 <input type="text"
-                   className="search-box"
+                   className="border border-solid border-black rounded-2xl"
                    value={searchText}
-                   onChange={(e) => {
+                   onChange={(e) => { 
                     setSearchText(e.target.value);
                    }}/>
-                <button 
+                <button className="px-4 py-1 bg-gray-300 m-4 rounded-2xl"
                     onClick={() => {
 
 
@@ -59,8 +73,9 @@ const Body = () => {
                     Search
                 </button>
             </div>
+            <div className="m-4 p-4 flex items-center">
             <button 
-              className="filter-btn" 
+              className="filter-btn px-4 py-1 bg-gray-300 rounded-2xl" 
               onClick={() => {
                 console.log("listOfRestaurant", listOfRestaurant);
                 
@@ -75,8 +90,9 @@ const Body = () => {
             >
                 Top Rated Restaurants
             </button>
+            </div>
         </div>
-        <div className="res-container">
+        <div className="flex flex-wrap">
             {
               filteredRestaurant.map((restaurant) => ( 
               <RestaurantCard key={restaurant.id} resData={restaurant} />

@@ -244,3 +244,11 @@ export default UserClass;
   65221  - The Barn Grill
   6990   - Jumboking Burgers
   52767  - KFC
+
+
+# Other Bundelr
+ - Chunking
+ - Code Splitting
+ - Dynamic Bundling
+ - Lazy Loading
+ - On Demand Loading

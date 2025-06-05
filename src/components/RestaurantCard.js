@@ -16,17 +16,19 @@ const RestaurantCard = (props) => {
   let uniqueImageName = imageSplit[imageSplit.length - 1];
 
   return (
-    <div className="res-card" style={{ backgroundColor: "rgb(234, 231, 231)" }}>
+    <div className="m-4 p-4 w-[250px] 
+                    rounded-2xl
+                   bg-gray-200 hover:bg-gray-500 shadow-2xl">
       <img
-        className="res-logo"
+        className="res-logo rounded-2xl"
         alt="res-logo"
         src={CDN_LOGO + uniqueImageName}
       />
-      <h3>{name}</h3>
-      <h4>{cuisine}</h4>
-      <h4>{rating} stars</h4>
-      <h4>{tags.join(" , ")}</h4>
-      <h4>{mealType.join(" , ")}</h4>
+      <h3 className="font-extrabold">{name}</h3>
+      <h4 className="font-mono">{cuisine}</h4>
+      <h4 className="text-xs">{rating} stars</h4>
+      <h4 className="font-semibold text-sm">{tags.join(" , ")}</h4>
+      <h4 className="font-semibold text-sm">{mealType.join(" , ")}</h4>
     </div>
   );
 };
