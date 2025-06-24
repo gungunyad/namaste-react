@@ -244,7 +244,7 @@ export default UserClass;
   65221  - The Barn Grill
   6990   - Jumboking Burgers
   52767  - KFC
-
+  792346 - Wendy's Flavor Fresh Burgers
 
 # Other Bundelr
  - Chunking

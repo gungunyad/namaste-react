@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
-import RestaurantCard from "./RestaurantCard";
+import { useEffect, useState, useContext } from "react";
+import RestaurantCard, { withPromtedLabel } from "./RestaurantCard";
 import Shimmer from "./shimmer";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
 
 const Body = () => {
 
@@ -10,6 +11,8 @@ const Body = () => {
     const [ filteredRestaurant, setFilteredRestaurant] = useState([]);
 
     const [searchText , setSearchText] = useState("");
+
+    const RestaurantCardPromoted = withPromtedLabel(RestaurantCard);
 
     
     
@@ -40,8 +43,9 @@ const Body = () => {
          <h1>You are Offline..!!
              Please Check Your Internet Connection👻👾...
          </h1>
-         
-        )
+         );
+
+         const { loggedInUser, setUserName } = useContext(UserContext);
 
 
     // Conditional Rendering - 
@@ -90,6 +94,12 @@ const Body = () => {
             >
                 Top Rated Restaurants
             </button>
+            </div>
+            <div className="serch m-4 p-4 flex items-center">
+                <label>UserName : </label>
+                <input className="border border-black p-2 m-2 rounded-2xl"
+                    value={loggedInUser}
+                    onChange={(e) => setUserName(e.target.value)}  />
             </div>
         </div>
         <div className="flex flex-wrap">
